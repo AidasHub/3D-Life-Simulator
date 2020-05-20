@@ -2,9 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
+    //Settings
+    //public float GameSoundVolume = 0.5f;
+    //public float MusicVolume = 0.5f;
+
+    int GameTasksN = 0;
+    public GameTask[] GameTasks;
+
+    static GameController instance;
+
+    [SerializeField]
+    public bool GamePaused = false;
+
+    GameObject EscapeMenu;
+
     [SerializeField]
     TextController TextController = null;
 
@@ -23,9 +38,24 @@ public class GameController : MonoBehaviour
     [SerializeField]
     int MirrorsShattered = 0;
 
+    private void Awake()
+    {
+        if(instance != null)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
     private void Start()
     {
-        if(HungerEnabled)
+        InitializeGameTasks();
+
+        if (HungerEnabled)
         {
             UI_Controller.DisplayHunger(true);
             StartCoroutine(HungerTick());
@@ -34,10 +64,14 @@ public class GameController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Application.Quit();
-        }
+    }
+
+    public void InitializeGameTasks()
+    {
+        GameTasks = new GameTask[3];
+        GameTasks[GameTasksN] = new GameTask(GameTasksN++, "Cockroaches!", "Evict the nasty house guests");
+        GameTasks[GameTasksN] = new GameTask(GameTasksN++, "Nothing to do with luck", "Win a game that involves toes");
+        GameTasks[GameTasksN] = new GameTask(GameTasksN++, "Exam", "Pass the IT exam");
     }
 
     IEnumerator HungerTick()
@@ -54,5 +88,19 @@ public class GameController : MonoBehaviour
     {
         MirrorsShattered += 1;
         TextController.UpdateMirrors("Mirrors shattered: " + MirrorsShattered);
+    }
+
+    public void CheckTasks()
+    {
+        bool complete = true;
+        foreach(GameTask T in GameTasks)
+        {
+            if (!T.Completed)
+                complete = false;
+        }
+        if (complete)
+        {
+            SceneManager.LoadScene(3);
+        }
     }
 }

@@ -10,6 +10,9 @@ public class Sidequest_Cockroach : MonoBehaviour
     PlayerController PlayerController = null;
     [SerializeField]
     TextController TextController = null;
+    [SerializeField]
+    TaskController TaskController;
+    AudioSource AudioSource;
 
     [SerializeField]
     List<GameObject> Cockroaches;
@@ -24,15 +27,21 @@ public class Sidequest_Cockroach : MonoBehaviour
         TriggerSprite = GetComponentInChildren<SpriteRenderer>();
         CockroachTotal = Cockroaches.Count;
         print("Total cockroaches " + CockroachTotal);
+        AudioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(CockroachesKilled == CockroachTotal)
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            TaskController.CompleteTask(0);
+        }
+        if (CockroachesKilled == CockroachTotal)
         {
             TextController.UpdateMonologue("Task Complete! Your reward: nothing; that's just life");
             this.gameObject.SetActive(false);
+            TaskController.CompleteTask(0);
         }
     }
 
@@ -40,6 +49,7 @@ public class Sidequest_Cockroach : MonoBehaviour
     {
         if(other.tag == "Player")
         {
+            AudioSource.Play();
             PlayerCamera = other.gameObject.GetComponentInChildren<CameraController>();
             PlayerController = other.gameObject.GetComponentInChildren<PlayerController>();
 

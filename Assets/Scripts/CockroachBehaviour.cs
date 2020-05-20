@@ -17,10 +17,12 @@ public class CockroachBehaviour : MonoBehaviour
     float WanderTimer = 3;
     float Timer;
 
+    AudioSource AudioSource;
 
     // Start is called before the first frame update
     void Start()
     {
+        AudioSource = GetComponent<AudioSource>();
         SpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         Timer = WanderTimer;
     }
@@ -46,6 +48,7 @@ public class CockroachBehaviour : MonoBehaviour
 
         if(other.tag == "Player")
         {
+            AudioSource.Play();
             SpriteRenderer.sprite = SplatSprite;
             agent.enabled = false;
             CockroachController.IncreaseCockroachKillCount();

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    GameController GameController;
     public CharacterController controller;
 
     private Rigidbody rb;
@@ -25,12 +26,18 @@ public class PlayerController : MonoBehaviour
     Vector3 velocity;
     public LayerMask LayerMask;
 
+    AudioSource AudioSource;
+    [SerializeField]
+    AudioClip[] AudioClips;
+
     private void Start()
     {
         camera = Camera.main;
         rb = GetComponent<Rigidbody>();
         PlayerAnimatorGameObject = GameObject.Find("FirstPersonAnimations");
+        GameController = GameObject.Find("GameController").GetComponent<GameController>();
         PlayerAnimator = PlayerAnimatorGameObject.GetComponent<Animator>();
+        AudioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -38,6 +45,8 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space) && controller.isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            AudioSource.clip = AudioClips[0];
+            AudioSource.Play();
         }
 
         float x = Input.GetAxis("Horizontal");
@@ -51,18 +60,29 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if(GameController.GamePaused == false)
         {
-            PlayerAnimator.Play("Punch");
-            if (Physics.Raycast(camera.transform.position, camera.transform.TransformDirection(Vector3.forward), out hit, reachDistance, LayerMask))
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                if(hit.collider.tag == "Mirror")
+                PlayerAnimator.Play("Punch");
+                AudioSource.clip = AudioClips[1];
+                AudioSource.Play();
+                if (Physics.Raycast(camera.transform.position, camera.transform.TransformDirection(Vector3.forward), out hit, reachDistance, LayerMask))
                 {
-                    hit.collider.gameObject.GetComponentInChildren<MirrorScript>().Shatter();
+                    if (hit.collider.tag == "Mirror")
+                    {
+                        hit.collider.gameObject.GetComponentInChildren<MirrorScript>().Shatter();
+                    }
+                    if(hit.collider.tag == "TicTacToe")
+                    {
+                        int row = int.Parse(hit.collider.gameObject.name[0].ToString());
+                        int col = int.Parse(hit.collider.gameObject.name[1].ToString());
+
+                        hit.collider.GetComponentInParent<TicTacToe>().DrawO(row, col);
+                    }
                 }
             }
         }
-
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
