@@ -80,6 +80,11 @@ public class PlayerController : MonoBehaviour
 
                         hit.collider.GetComponentInParent<TicTacToe>().DrawO(row, col);
                     }
+                    if(hit.collider.tag == "Ball")
+                    {
+                        print("BALL FOUND");
+                        hit.collider.gameObject.GetComponent<BallScript>().PunchBall(camera.transform.TransformDirection(Vector3.forward));
+                    }
                 }
             }
         }

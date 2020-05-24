@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 public class CarScript : MonoBehaviour
 {
     [SerializeField]
@@ -51,6 +51,9 @@ public class CarScript : MonoBehaviour
             Player.GetComponentInChildren<CameraController>().DisableCameraMovement();
             Player.transform.position = GameObject.Find("GameOverPlayerPosition").transform.position;
             BlackPanel.SetActive(true);
+            Color c = BlackPanel.GetComponent<Image>().color;
+            c.a = 1;
+            BlackPanel.GetComponent<Image>().color = c;
             GameObject.Find("TaskList").SetActive(false);
             AudioSource = GetComponent<AudioSource>();
             AudioSource.Play();

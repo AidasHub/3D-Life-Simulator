@@ -33,13 +33,9 @@ public class Sidequest_Cockroach : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            TaskController.CompleteTask(0);
-        }
         if (CockroachesKilled == CockroachTotal)
         {
-            TextController.UpdateMonologue("Task Complete! Your reward: nothing; that's just life");
+            TextController.UpdateMonologue("Freeloaders evicted!");
             this.gameObject.SetActive(false);
             TaskController.CompleteTask(0);
         }

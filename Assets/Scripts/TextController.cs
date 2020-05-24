@@ -12,14 +12,23 @@ public class TextController : MonoBehaviour
     string TextBuffer = null;
     [SerializeField]
     float timeBetweenCharacters = 0.3f;
-    
-    public void UpdateMonologue(string text)
+
+    public bool isMonologuing = false;
+
+    public void UpdateMonologue(string text, bool fast=false)
     {
+        StopAllCoroutines();
+        MirrorsText.text = "";
+        Monologue.text = "";
+        isMonologuing = true;
         //Monologue.text = text;
         Monologue.enabled = true;
         //StopCoroutine("Wait");
         //StartCoroutine(Wait(5, Monologue, true));
-        StartCoroutine(Wait(text, 5, Monologue, false, true));
+        if (fast == false)
+            StartCoroutine(Wait(text, 5, Monologue, false, true));
+        else
+            StartCoroutine(Wait(text, 2.5f, Monologue, false, true));
     }
 
     public void UpdateMirrors(string text)
@@ -40,6 +49,7 @@ public class TextController : MonoBehaviour
                 Component.text += TextBuffer[i];
                 yield return new WaitForSeconds(timeBetweenCharacters);
             }
+            isMonologuing = false;
             yield return new WaitForSeconds(seconds);
             Component.text = "";
             TextBuffer = "";

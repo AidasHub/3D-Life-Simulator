@@ -1208,7 +1208,7 @@ MonoBehaviour:
   m_text: "    class Program { \r\n        \n    string[ ] names = new string[ ]
     {\"Bob\", \"Bill\", \"John\", \"Derrick\", \"Sam\" }; \n\n\n        static void
     Main(string[] args) { \r\n            \n            Console.WriteLine(\"Hello
-    World!\"); \r\n            GetName(3);\n            PrintAllNames();\n       
+    World!\"); \r\n            string SomeName = GetName(3);\n            PrintAllNames();\n       
     } \r\n\n        public string             (int id)\n        {\n            return            
     ;\n        }\n        \n        public\n        {\n            foreach(        
     s in         )\n            {\n                Console.WriteLine(s);\n           
@@ -1282,10 +1282,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 6.7370477, z: 0, w: 2.245734}
   m_textInfo:
     textComponent: {fileID: 1939123904213907059}
-    characterCount: 525
+    characterCount: 543
     spriteCount: 0
-    spaceCount: 285
-    wordCount: 36
+    spaceCount: 288
+    wordCount: 38
     linkCount: 0
     lineCount: 23
     pageCount: 1

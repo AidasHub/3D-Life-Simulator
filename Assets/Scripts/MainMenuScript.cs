@@ -41,11 +41,13 @@ public class MainMenuScript : MonoBehaviour
     public void SaveMusicAudio(float soundLevel)
     {
         AudioMixer.SetFloat("Music", soundLevel);
+        GameController.MusicSoundLevel = soundLevel;
     }
 
     public void SaveGameSoundAudio(float soundLevel)
     {
         AudioMixer.SetFloat("Sounds", soundLevel);
+        GameController.GameSoundLevel = soundLevel;
     }
 
     public void About()
@@ -61,6 +63,10 @@ public class MainMenuScript : MonoBehaviour
     public void BackToMainMenu()
     {
         SceneManager.LoadScene(0);
+        Time.timeScale = 1f;
+        print(GameController == null);
+        GameController.GamePaused = false;
+        GameController.ResetTasks();
     }
 
     public void Resume()
